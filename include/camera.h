@@ -5,4 +5,25 @@
 #ifndef LASER_SCAN_CLASSFICATION_CAMERA_H
 #define LASER_SCAN_CLASSFICATION_CAMERA_H
 
+#include "opencv2/opencv.hpp"
+#include <fstream>
+using namespace cv;
+using namespace std;
+namespace ranging {
+    class Camera {
+    public:
+        bool captureImg(const int extract_rate);
+
+        void testImg();
+
+        bool openCam();
+
+        bool closeCam();
+
+    private:
+        Mat frame;
+        VideoCapture cap;
+        ofstream outfile;
+    };
+}
 #endif //LASER_SCAN_CLASSFICATION_CAMERA_H
