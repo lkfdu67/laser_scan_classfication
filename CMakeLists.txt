@@ -1,17 +1,27 @@
-cmake_minimum_required( VERSION 2.8 )
-project( laser_scan_classfication )
+cmake_minimum_required(VERSION 2.8)
+project(laser_scan_classfication)
 
-# 添加c++ 11标准支持
-set( CMAKE_CXX_FLAGS "-std=c++11" )
+# add c++11 standard
+set(CMAKE_CXX_COMPILER "g++")
+set(CMAKE_BUILD_TYPE "Release")
+set(CMAKE_CXX_FLAGS "-std=c++11 -march=native -O3")
 
-# 寻找OpenCV库
-find_package(OpenCV 2.4.8 REQUIRED core imgproc highgui objdetect)
-# 添加头文件
-include_directories(${OpenCV_INCLUDE_DIRS})
-message( ${OpenCV_INCLUDE_DIRS} )
+# add output path
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+
+# find opencv lib path
+find_package(OpenCV 3.4 REQUIRED)
+# add head file
+include_directories(${OpenCV_INCLUDE_DIRS} include)
+message(${OpenCV_INCLUDE_DIRS})
 message(${OpenCV_LIBS})
 
-add_executable( laser_scan_classfication main.cpp)
-# 链接OpenCV库
-target_link_libraries( laser_scan_classfication /usr/local/lib/
-                        ${OpenCV_LIBS})
+set(THIRD_PARTY_LIBS ${OpenCV_LIBS})
+
+############### dependencies ######################
+include_directories( ${PROJECT_SOURCE_DIR}/include )
+add_subdirectory( src )
+
+add_executable(laser_scan_classfication main.cpp )
+target_link_libraries( laser_scan_classfication ranging)
