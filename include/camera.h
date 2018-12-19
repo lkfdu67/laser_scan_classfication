@@ -6,6 +6,7 @@
 #define LASER_SCAN_CLASSFICATION_CAMERA_H
 
 #include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include <fstream>
 using namespace cv;
 using namespace std;
@@ -16,7 +17,7 @@ namespace ranging {
 
         void testImg();
 
-        bool openCam();
+        int openCam(VideoCapture&);
 
         bool closeCam();
 

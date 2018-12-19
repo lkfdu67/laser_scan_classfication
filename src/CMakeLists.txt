@@ -1,5 +1,6 @@
 add_library(ranging STATIC
         camera.cpp
+        classify.cpp
         )
 
 target_link_libraries(

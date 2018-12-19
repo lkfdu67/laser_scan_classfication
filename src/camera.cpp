@@ -7,7 +7,7 @@ namespace ranging{
         outfile.open("../dataset/data.txt", ios::binary | ios::in | ios::out | ios::trunc);
         // open the default camera, use something different from 0 otherwise;
         // Check VideoCapture documentation.
-        if (!cap.open(0))
+        if (!cap.open(1))
             return false;
         double frame_rate = cap.get(CV_CAP_PROP_FPS);
         int frame_idx = 0;
@@ -29,7 +29,7 @@ namespace ranging{
                     jpg_name = "../dataset/" + to_string(frame_idx) + ".jpg";
                     imwrite(jpg_name,frame);
                     outfile << jpg_name << endl;
-                    outfile << "+" << endl;
+                    outfile << "1" << endl;
                     cout << "p: " << frame_idx << endl;
                     break;
                 }
@@ -38,7 +38,7 @@ namespace ranging{
                     jpg_name = "../dataset/" + to_string(frame_idx) + ".jpg";
                     imwrite(jpg_name,frame);
                     outfile << jpg_name << endl;
-                    outfile << "-" << endl;
+                    outfile << "-1" << endl;
                     cout << "n: " << frame_idx << endl;
                     break;
                 }
@@ -52,10 +52,17 @@ namespace ranging{
         outfile.close();
     }
     bool Camera::closeCam() {
-
+        cap.release();
     }
-    bool Camera::openCam() {
-
+    int Camera::openCam(VideoCapture& capture) {
+        // open the default camera, use something different from 0 otherwise;
+        // Check VideoCapture documentation.
+        if (!cap.open(1)) {
+            cout << "open cam failed" << endl;
+            return -1;
+        }
+        capture = cap;
+        return 0;
     }
     void Camera::testImg() {
 
