@@ -2,9 +2,19 @@
 #include "opencv2/opencv.hpp"
 #include "camera.h"
 #include "classify.h"
+#include "calculate.h"
+
+#define ECLIPSEWIDTH 51.1
+#define ECLIPSEHEIGHT 80.5
+#define STANDARDLENGTH 346.41
+#define EclipseDist (670.31*2)
+using namespace std;
 int main(int argc, char **argv) {
     ranging::Camera camera;
     ranging::Classify classify;
+    ranging::Calculate calculate(ECLIPSEWIDTH,ECLIPSEHEIGHT,STANDARDLENGTH);
+    cout << calculate.realEclipseWidth_ << endl;
+    cout << calculate.realEclipseWidth_ << endl;
     VideoCapture capture;
     Mat frame;
     unsigned long total_count = 0;
