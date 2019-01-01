@@ -17,7 +17,7 @@ namespace ranging {
         Calculate(double EclipseWidth, double EclipseHeight, double standard_length) : realEclipseWidth_(EclipseWidth), realEclipseHeight_(EclipseHeight),
                                                                                        realStandard_(standard_length), ratio_(0) {}
 
-        eclipse<int> detect_eclipse(cv::Mat frame);
+        eclipse<int> detect_eclipse();
 
         point<double> calculate(point<int> &center, point<int> &laser_marker, eclipse<int> eclipse);
 
@@ -25,6 +25,8 @@ namespace ranging {
         double realEclipseWidth_;
         double realEclipseHeight_;
         double realStandard_;
+        int center_x_;
+        int center_y_;
     };
 }
 #endif //LASER_SCAN_CLASSFICATION_CALCULATE_H

@@ -9,6 +9,8 @@ namespace ranging{
         // Check VideoCapture documentation.
         if (!cap.open(1))
             return false;
+        cap.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
+        cap.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
         double frame_rate = cap.get(CV_CAP_PROP_FPS);
         int frame_idx = 0;
         string jpg_name;
@@ -61,6 +63,8 @@ namespace ranging{
             cout << "open cam failed" << endl;
             return -1;
         }
+        cap.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
+        cap.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
         capture = cap;
         return 0;
     }
