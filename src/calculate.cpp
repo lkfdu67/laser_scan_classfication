@@ -7,7 +7,7 @@
 
 using namespace cv;
 namespace ranging {
-    point<double> Calculate::calculate(point<int> &center, point<int> &laser_marker, eclipse<int> eclipse) {
+    point<double> Calculate::calculate(point<int> &laser_marker, eclipse<int> eclipse) {
 
         ratio_ = (eclipse.height / realEclipseHeight_ + eclipse.width / realEclipseWidth_) / 2.0;
         if (ratio_ == 0)
@@ -16,16 +16,16 @@ namespace ranging {
 
         output.x = (RESOLUTION_CENTER_WIDTH - eclipse.x - eclipse.width / 2) / ratio_;
         output.y = (RESOLUTION_CENTER_HEIGHT - eclipse.y - eclipse.height / 2) / ratio_;
-        output.z = (laser_marker.x - center.x) * tan(M_PI / 3.0) / ratio_ + realStandard_;
+        output.z = (laser_marker.x - RESOLUTION_CENTER_WIDTH) * tan(M_PI / 3.0) / ratio_ + realStandard_;
         cout << "x: " << output.x << " y: " << output.y << " z: " << output.z << endl;
         return output;
 
     }
 
-    eclipse<int> Calculate::detect_eclipse() {
+    eclipse<int> Calculate::detect_eclipse(cv::Mat srcImg) {
         eclipse<int> eclipse;
-        Mat srcImg = imread("/home/minzhao/Document/laser_scan_classfication/dataset/1.jpg");
-        cout << srcImg.rows << " " << srcImg.cols << endl;
+//        Mat srcImg = imread("/home/minzhao/Document/laser_scan_classfication/dataset/15.jpg");
+//        cout << srcImg.rows << " " << srcImg.cols << endl;
         vector<vector<Point>> contours;    //储存轮廓
         vector<Vec4i> hierarchy;
         double FACTOR = 2.5;
@@ -66,25 +66,15 @@ namespace ranging {
         drawContours(drawing, contours_poly, 0, cv::Scalar(0, 0, 255), 1, 8, vector<cv::Vec4i>(), 0, cv::Point());
         rectangle(drawing, boundRect.tl(), boundRect.br(), cv::Scalar(0, 0, 255), 1, 8, 0);
 
-
-
-        eclipse.x = boundRect.x;
-        eclipse.y = boundRect.y;
+        eclipse.x = boundRect.x; //椭圆左上的坐标x
+        eclipse.y = boundRect.y; //椭圆左上的坐标y
         eclipse.height = boundRect.height;
         eclipse.width = boundRect.width;
 
-        cv::Rect rect_point(boundRect.x + boundRect.width / 2, boundRect.y + boundRect.height / 2,2,2);
-        rectangle(srcImg, rect_point, cv::Scalar(0, 255, 0), 1, 8, 0);
-        cout << boundRect.x << " " << boundRect.y << " " << boundRect.width << " " << boundRect.height << endl;
-
-        cv::Rect rect_point1(659, 286,2,2);
-
-        cv::Rect rect_center(RESOLUTION_CENTER_WIDTH,RESOLUTION_CENTER_HEIGHT,2,2);
-        rectangle(srcImg, rect_point1, cv::Scalar(255, 0, 0), 1, 8, 0);
-        rectangle(srcImg, rect_center, cv::Scalar(0, 255, 0), 1, 8, 0);
-        imshow("pointImg", srcImg);
-        imshow("contour", drawing);
-        waitKey();
+//        cout << boundRect.x << " " << boundRect.y << " " << boundRect.width << " " << boundRect.height << endl;
+//        imshow("pointImg", srcImg);
+//        imshow("contour", drawing);
+//        waitKey();
         return eclipse;
     }
 }
