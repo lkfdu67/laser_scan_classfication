@@ -2,6 +2,7 @@
 // Created by minzhao on 18-12-9.
 //
 #include "camera.h"
+#include "common.h"
 namespace ranging{
     bool Camera::captureImg(const int extract_rate) {
         outfile.open("../dataset/data.txt", ios::binary | ios::in | ios::out | ios::trunc);
@@ -9,12 +10,14 @@ namespace ranging{
         // Check VideoCapture documentation.
         if (!cap.open(1))
             return false;
+        cap.set(CV_CAP_PROP_FRAME_WIDTH, RESOLUTION_WIDTH);
+        cap.set(CV_CAP_PROP_FRAME_HEIGHT, RESOLUTION_HEIGHT);
         double frame_rate = cap.get(CV_CAP_PROP_FPS);
         int frame_idx = 0;
         string jpg_name;
         for (;;) {
             cap >> frame;
-            if (frame.empty()) break; // end of video stream
+            if (frame.empty()) break; // end of vidQeo stream
             imshow("this is you, smile! :)", frame);
             int c = waitKey(1);
             switch (c) {
@@ -61,6 +64,8 @@ namespace ranging{
             cout << "open cam failed" << endl;
             return -1;
         }
+        cap.set(CV_CAP_PROP_FRAME_WIDTH, RESOLUTION_WIDTH);
+        cap.set(CV_CAP_PROP_FRAME_HEIGHT, RESOLUTION_HEIGHT);
         capture = cap;
         return 0;
     }
